@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation - Save Lives</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* styles.css */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+}
+
+header {
+    background-color: #ff4b5c;
+    color: #fff;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    background: url('images/Woman-donating-blood.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    padding: 2rem;
+}
+
+.hero-content {
+    position: absolute;
+    z-index: 2;
+    max-width: 600px;
+    background: rgba(0, 0, 0, 0.5); /* Add a translucent background */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ffedef;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-buttons .btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    margin: 0.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #ff4b5c;
+    color: #fff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #d7434f;
+}
+
+.btn-secondary {
+    background-color: #fff;
+    color: #ff4b5c;
+    border: 2px solid #ff4b5c;
+}
+
+.btn-secondary:hover {
+    background-color: #ffe3e5;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    flex: 1;
+}
+
+.about, .features, .download {
+    padding: 2rem 1rem;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.about p, .download p {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+}
+
+.features {
+    background-color: #fff;
+}
+
+.feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature-item {
+    max-width: 300px;
+    text-align: left;
+}
+
+.feature-item h3 {
+    color: #ff4b5c;
+    margin-bottom: 0.5rem;
+}
+
+.feature-item p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.download-buttons .btn {
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    margin: 0.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.btn-ios {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-ios:hover {
+    background-color: #333;
+}
+
+.btn-android {
+    background-color: #3ddc84;
+    color: #fff;
+}
+
+.btn-android:hover {
+    background-color: #32c176;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #ff4b5c;
+    color: #fff;
+}
+
+</style>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">BloodDonation</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#download">Download</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Donate Blood, Save Lives</h1>
+                <p>Join our mission to make blood donation easy and accessible for everyone. Download the app today!</p>
+                <div class="cta-buttons">
+                    <a href="#download" class="btn btn-primary">Download Now</a>
+                    <a href="#about" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+        
+
+        <section id="about" class="about">
+            <h2>About Us</h2>
+            <p>We connect donors with those in need, creating a seamless experience for saving lives. With our app, you can find donation centers, track your donations, and make a difference in your community.</p>
+        </section>
+
+        <section id="features" class="features">
+            <h2>Features</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h3>Find Donation Centers</h3>
+                    <p>Locate the nearest blood donation center with ease.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Track Your Donations</h3>
+                    <p>Monitor your donation history and impact over time.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Get Notifications</h3>
+                    <p>Receive reminders for your next donation and urgent blood requests.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="download" class="download">
+            <h2>Download the App</h2>
+            <p>Available on both iOS and Android. Join our community and start saving lives today.</p>
+            <div class="download-buttons">
+                <a href="#" class="btn btn-ios">Download on App Store</a>
+                <a href="#" class="btn btn-android">Download on Google Play</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 BloodDonation. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
