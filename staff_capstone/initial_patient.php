@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Details with Unverified Status</title>
+    <title>INTERVIEWER</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
@@ -60,6 +60,13 @@ if ($result->num_rows > 0) {
             margin-bottom: 20px;
             text-align: center;
         }
+        h2 {
+            color: #d71c1c; /* Blood red color */
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
 
         table {
             width: 100%;
@@ -122,7 +129,9 @@ if ($result->num_rows > 0) {
 <body>
 
     <div class="container">
-        <h1>User Details with Unverified Status</h1>
+    <h1>INTERVIEWER</h1>
+
+        <h2>User Details with Unverified Status</h2>
 
         <?php if (empty($users)) { ?>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No users found with unverified blood collection status.</p>

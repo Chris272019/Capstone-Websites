@@ -2,18 +2,19 @@
 // Include database connection
 include('connection.php');
 
-// Fetch all users linked to the schedule table
+// Fetch users who are verified in screening_answers and not in schedule
 $sql = "SELECT u.id, u.firstname, u.surname, u.email_address 
         FROM users u
-        JOIN schedule s ON u.id = s.user_id";
+        JOIN screening_answers sa ON u.id = sa.user_id
+        LEFT JOIN schedule s ON u.id = s.user_id
+        WHERE sa.verification_status = 'Verified' 
+        AND s.user_id IS NULL";  // Exclude users already scheduled
+
 $result = mysqli_query($conn, $sql);
 
 if ($result && mysqli_num_rows($result) > 0) {
-
-  echo '<div class="card-container">';
-    echo '<form method="POST" id="userManagementCard" action="process_add_schedule.php">'; // Form will submit to process_add_schedule.php
-    
-
+    echo '<div class="card-container">';
+    echo '<form method="POST" id="userManagementCard" action="process_add_schedule.php">'; 
 
     // Loop through each user and display their details in a card
     while ($user = mysqli_fetch_assoc($result)) {
@@ -35,15 +36,12 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 
     echo '</div>'; // Close card container
-
-    echo '<div style="text-align: center; margin-top: 20px;">
-          </div>'; // Submit button
-
     echo '</form>';
 } else {
-    echo '<div class="card-container"><p>No users available for scheduling.</p></div>';
+    echo '<div class="card-container"><p>No verified users available for scheduling.</p></div>';
 }
 ?>
+  
 <form method="POST" action="process_add_schedule.php" id="scheduleForm">
     <button type="button" class="btn btn-primary" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#scheduleModal">Open Schedule Modal</button>
     

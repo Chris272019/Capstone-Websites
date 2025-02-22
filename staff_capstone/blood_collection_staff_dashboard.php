@@ -2,60 +2,57 @@
 // Start the session
 session_start();
 
-// Include your database connection file
+// Include the database connection
 include('connection.php');
 
-// Get the logged-in user's staff_id from session
-$staff_id = $_SESSION['staff_id']; // Assuming the staff_id is stored in session
+// Get the logged-in staff ID
+if (!isset($_SESSION['staff_id'])) {
+    echo "<p>Error: Staff ID not found in session.</p>";
+    exit();
+}
+$staff_id = $_SESSION['staff_id'];
 
-// Check if a user_id is passed in the URL
-if (isset($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
+// Get the user ID from the URL
+if (!isset($_GET['user_id'])) {
+    echo "<p>Error: User ID not provided.</p>";
+    exit();
+}
+$user_id = $_GET['user_id'];
 
-    // Query to get the blood collection record for the given user_id
-    $query = "SELECT * FROM blood_collection WHERE user_id = ?";
-    if ($stmt = $conn->prepare($query)) {
-        // Bind the parameter
-        $stmt->bind_param("i", $user_id);
-
-        // Execute the statement
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        // Check if a record exists
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            // Fetch the existing data
-            $karmi = $row['karmi'];
-            $terumo = $row['terumo'];
-            $special_bag = $row['special_bag'];
-            $apheresis = $row['apheresis'];
-            $amount_blood_taken = $row['amount_blood_taken'];
-            $successful = $row['successful'];
-            $donors_reaction = $row['donors_reaction'];
-            $management_done = $row['management_done'];
-            $start_time = $row['start_time'];
-            $end_time = $row['end_time'];
-            $status = $row['status'];    // Retrieve the blood type
-        } else {
-            echo "<p>No record found for this user.</p>";
-            exit();
-        }
-
-        // Close the statement
-        $stmt->close();
+// Fetch existing blood collection record
+$query = "SELECT * FROM blood_collection WHERE user_id = ?";
+if ($stmt = $conn->prepare($query)) {
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $karmi = $row['karmi'];
+        $terumo = $row['terumo'];
+        $special_bag = $row['special_bag'];
+        $apheresis = $row['apheresis'];
+        $amount_blood_taken = $row['amount_blood_taken'];
+        $successful = $row['successful'];
+        $donors_reaction = $row['donors_reaction'];
+        $management_done = $row['management_done'];
+        $start_time = $row['start_time'];
+        $end_time = $row['end_time'];
+        $status = $row['status'];
+        $blood_type = $row['blood_type'];
     } else {
-        echo "<p>Error preparing the query: " . $conn->error . "</p>";
+        echo "<p>No record found for this user.</p>";
         exit();
     }
+    $stmt->close();
 } else {
-    echo "<p>No user_id provided.</p>";
+    echo "<p>Error preparing the query: " . $conn->error . "</p>";
     exit();
 }
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the form values
+    // Get form values
     $karmi = $_POST['karmi'];
     $terumo = $_POST['terumo'];
     $special_bag = $_POST['special_bag'];
@@ -66,54 +63,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $management_done = $_POST['management_done'];
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
-    $blood_type = $_POST['blood_type']; // Get the selected blood component
+    $blood_type = $_POST['blood_type']; // Retain for other tables
+    $blood_type_plasma = $_POST['blood_type']; // Insert into blood_collection_inventory
 
-    // Set status to "Verified" and update staff_id based on logged-in user
-    $status = 'Verified';
-
-    $update_query = "UPDATE blood_collection SET karmi = ?, terumo = ?, special_bag = ?, apheresis = ?, amount_blood_taken = ?, successful = ?, donors_reaction = ?, management_done = ?, start_time = ?, end_time = ?, status = ?, staff_id = ?, blood_type = ? WHERE user_id = ?";
-
-    if ($stmt = $conn->prepare($update_query)) {
-        // Bind the parameters
-        $stmt->bind_param("ssssssssssssss", $karmi, $terumo, $special_bag, $apheresis, $amount_blood_taken, $successful, $donors_reaction, $management_done, $start_time, $end_time, $status, $staff_id, $blood_type, $user_id);
-
-        // Execute the statement
-        if ($stmt->execute()) {
-            // Update the blood_donation_history table
-            $history_query = "UPDATE blood_donation_history SET donation_quantity = ?, blood_type = ? WHERE user_id = ?";
-            if ($history_stmt = $conn->prepare($history_query)) {
-                // Bind the parameters
-                $history_stmt->bind_param("dsi", $amount_blood_taken, $blood_type, $user_id);
-
-                // Execute the query
-                if ($history_stmt->execute()) {
-                    // Successfully updated blood_donation_history
-                    header("Location: blood_collection_patient.php");
-                    exit();
-                } else {
-                    echo "<p>Error updating blood_donation_history: " . $history_stmt->error . "</p>";
-                }
-
-                // Close the statement
-                $history_stmt->close();
-            } else {
-                echo "<p>Error preparing the blood_donation_history query: " . $conn->error . "</p>";
-            }
-        } else {
-            echo "<p>Error updating the record: " . $stmt->error . "</p>";
-        }
-
-        // Close the statement
-        $stmt->close();
-    } else {
-        echo "<p>Error preparing the update query: " . $conn->error . "</p>";
+    // Debugging: Check if blood type is captured
+    if (empty($blood_type)) {
+        echo "<p>Error: Blood type is missing from form submission.</p>";
+        exit();
     }
 
-    // Close the database connection
-    $conn->close();
+    // Set status to "Verified"
+    $status = 'Verified';
+
+    // Update blood_collection
+    $update_query = "UPDATE blood_collection SET karmi = ?, terumo = ?, special_bag = ?, apheresis = ?, amount_blood_taken = ?, successful = ?, donors_reaction = ?, management_done = ?, start_time = ?, end_time = ?, status = ?, staff_id = ?, blood_type = ? WHERE user_id = ?";
+    if ($stmt = $conn->prepare($update_query)) {
+        $stmt->bind_param("sssssssssssssi", $karmi, $terumo, $special_bag, $apheresis, $amount_blood_taken, $successful, $donors_reaction, $management_done, $start_time, $end_time, $status, $staff_id, $blood_type, $user_id);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        echo "<p>Error updating blood_collection: " . $conn->error . "</p>";
+        exit();
+    }
+
+    // Update blood_donation_history
+    $history_query = "UPDATE blood_donation_history SET donation_quantity = ?, blood_type = ? WHERE user_id = ?";
+    if ($stmt = $conn->prepare($history_query)) {
+        $stmt->bind_param("dsi", $amount_blood_taken, $blood_type, $user_id);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        echo "<p>Error updating blood_donation_history: " . $conn->error . "</p>";
+        exit();
+    }
+
+    // Insert into blood_collection_inventory with blood_type_plasma
+    $collection_date = date("Y-m-d H:i:s");
+    $expiration_date = date("Y-m-d H:i:s", strtotime("+42 days"));
+    $status = "Available";
+
+    $insert_query = "INSERT INTO blood_collection_inventory (user_id, plasma_type, collection_date, expiration_date, volume_ml, status, collected_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+
+    if ($stmt = $conn->prepare($insert_query)) {
+        $stmt->bind_param("isssiss", $user_id, $blood_type_plasma, $collection_date, $expiration_date, $amount_blood_taken, $status, $staff_id);
+        
+        // Debugging: Check values before execution
+        echo "<p>Inserting: user_id=$user_id, plasma_type=$blood_type_plasma, collection_date=$collection_date, expiration_date=$expiration_date, volume_ml=$amount_blood_taken, status=$status, collected_by=$staff_id</p>";
+
+        if (!$stmt->execute()) {
+            echo "<p>Error executing blood_collection_inventory insert: " . $stmt->error . "</p>";
+        }
+        $stmt->close();
+    } else {
+        echo "<p>Error preparing blood_collection_inventory insert: " . $conn->error . "</p>";
+        exit();
+    }
+
+    // Redirect after successful updates
+    header("Location: blood_collection_patient.php");
+    exit();
 }
 
+// Close database connection
+$conn->close();
 ?>
+
+
 
 
 

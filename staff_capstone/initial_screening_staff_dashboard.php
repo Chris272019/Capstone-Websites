@@ -139,13 +139,12 @@ if (isset($_POST['update'])) {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Initial Screening</title>
+    <title>Interviewer: Update Initial Screening</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -207,7 +206,7 @@ if (isset($_POST['update'])) {
 <body>
 
     <div class="container">
-        <h1>Update Initial Screening for User ID: <?php echo htmlspecialchars($user_id); ?></h1>
+        <h1>Interviewer: Update Initial Screening for User ID: <?php echo htmlspecialchars($user_id); ?></h1>
 
         <form method="POST" action="">
             <label for="body_weight">Body Weight</label>

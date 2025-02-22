@@ -9,15 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $surname = mysqli_real_escape_string($conn, $_POST['surname']);
     $middlename = mysqli_real_escape_string($conn, $_POST['middlename']);
     $email_address = mysqli_real_escape_string($conn, $_POST['email_address']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
     $role = mysqli_real_escape_string($conn, $_POST['role']);
     
-    // Hash password before storing (for security)
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Generate a random 5-digit ID
+    $random_id = rand(10000, 99999);
 
-    // SQL query to insert new staff account
-    $sql = "INSERT INTO staff_account (firstname, surname, middlename, email_address, password, role) 
-            VALUES ('$firstname', '$surname', '$middlename', '$email_address', '$hashed_password', '$role')";
+    // SQL query to insert new staff account without the password column
+    $sql = "INSERT INTO staff_account (id, firstname, surname, middlename, email_address, role) 
+            VALUES ('$random_id', '$firstname', '$surname', '$middlename', '$email_address', '$role')";
     
     if (mysqli_query($conn, $sql)) {
         echo 'success';

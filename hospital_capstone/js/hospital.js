@@ -12,6 +12,7 @@ function loadContent(contentType) {
 }
 
 
+
 function toggleSidebar() {
     var sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('active');

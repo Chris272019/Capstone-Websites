@@ -20,6 +20,124 @@ unset($_SESSION['message'], $_SESSION['error']);
     <link rel="stylesheet" href="css/hospital.css">
 
 </head>
+<style>
+    /* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #f8f8f8;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 700px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Header styles */
+.modal-content h2 {
+    color: #e60000;
+    border-bottom: 2px solid #e60000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Form styles */
+.modal-body {
+    display: grid;
+    gap: 15px;
+}
+
+.mb-3 {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Radio button styles */
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* Textarea styles */
+textarea.form-control {
+    resize: vertical;
+}
+
+/* Blood type section styles */
+#requestType {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* Submit button styles */
+button[type="submit"] {
+    background-color: #e60000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #cc0000;
+}
+
+/* Close button styles */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive design */
+@media screen and (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+}   
+</style>
 <body>
     <!-- Display success or error messages -->
     <?php if ($message): ?>
@@ -38,16 +156,12 @@ unset($_SESSION['message'], $_SESSION['error']);
     <!-- Sidebar Navigation -->
     <!-- Toggle Sidebar Button -->
     <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
-    <div class="sidebar" id="sidebar">
-        <!-- Make Request -->
-        <a href="#" id="makeRequestBtn" onclick="openModal()"><i class="fas fa-plus-circle"></i> Make a Request</a>
-        <!-- Blood Requests -->
-        <a href="#" onclick="loadContent('bloodRequests')"><i class="fas fa-tint"></i> Blood Requests</a>
-        <!-- Reports -->
-        <a href="#" onclick="loadContent('reports')"><i class="fas fa-chart-line"></i> Reports</a>
-        <!-- Logout -->
-        <a href="hospital_logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-    </div>
+<div class="sidebar" id="sidebar">
+    <a href="#" id="makeRequestBtn" onclick="openModal()"><i class="fas fa-plus-circle"></i> Make a Request</a>
+    <a href="#" onclick="loadContent('bloodRequests')"><i class="fas fa-tint"></i> Blood Requests</a>
+    <a href="#" onclick="loadReport()"><i class="fas fa-chart-line"></i> Reports</a>
+    <a href="hospital_logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
 
     <!-- Modal for Making a Request -->
 <!-- Modal -->
@@ -490,14 +604,53 @@ unset($_SESSION['message'], $_SESSION['error']);
 
     <div id="bloodRequestsContainer"></div>
 
-    </div>
+    <div id="reportContainer"></div>
+    </script>
+    <div id="contentContainer"></div>
 
-    <div id="statisticsContainer"></div>
 
- 
+<div id="statisticsContainer"></div>
+
 <script src="js/hospital.js"></script>
+<script>
+function loadReport() {
+    document.getElementById('bloodRequestsContainer').style.display = 'none';
+    document.getElementById('reportContainer').style.display = 'block';
 
+    fetch('report.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('reportContainer').innerHTML = `
+                <div class="report-card">
+                   
+                    <div class="card-body">${data}</div>
+                </div>
+            `;
+        })
+        .catch(error => console.error('Error loading report:', error));
+}
 
+function loadContent(contentType) {
+    if (contentType === 'bloodRequests') {
+        document.getElementById('reportContainer').style.display = 'none';
+        document.getElementById('bloodRequestsContainer').style.display = 'block';
 
+        fetch('process_history_request.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('bloodRequestsContainer').innerHTML = data;
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+}
+
+function closeContent() {
+    document.getElementById('reportContainer').style.display = 'none';
+    document.getElementById('bloodRequestsContainer').style.display = 'none';
+}
+
+</script>
+
+</script>
 </body>
 </html>

@@ -60,6 +60,12 @@ if ($result->num_rows > 0) {
             margin-bottom: 20px;
             text-align: center;
         }
+        h2 {
+            color: #d71c1c; /* Blood red color */
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
         table {
             width: 100%;
@@ -122,7 +128,8 @@ if ($result->num_rows > 0) {
 <body>
 
     <div class="container">
-        <h1>User Details with Unverified Status</h1>
+        <h1>PHLEBOTOMIST</h1>
+        <h2>User Details with Unverified Status</h2>
 
         <?php if (empty($users)) { ?>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No users found with unverified blood collection status.</p>

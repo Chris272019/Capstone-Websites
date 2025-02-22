@@ -181,7 +181,7 @@ if (isset($_GET['donation_request'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="process_add_staff_account.php" method="POST">
+                    <form action="process_add_staff.php" method="POST">
                         <div class="form-group">
                             <label for="firstname">First Name</label>
                             <input type="text" class="form-control" id="firstname" name="firstname" required placeholder="Enter first name">
@@ -205,10 +205,6 @@ if (isset($_GET['donation_request'])) {
                                 <option value="Physician">Physician</option>
                                 <option value="Phlebotomist">Phlebotomist</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required placeholder="Enter password">
                         </div>
                         <button type="submit" class="btn btn-success">Add Staff</button>
                     </form>

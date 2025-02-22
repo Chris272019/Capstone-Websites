@@ -1,4 +1,8 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
 include 'connection.php'; // Include your database connection file
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

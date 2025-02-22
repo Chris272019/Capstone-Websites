@@ -2,50 +2,12 @@
 // Include database connection
 include('connection.php');
 
-// Check if verify or reject action was triggered
-if (isset($_GET['action']) && isset($_GET['user_id'])) {
-    $action = $_GET['action'];
-    $user_id = $_GET['user_id'];
-
-    // Determine the verification status based on the action
-    $status = ($action == 'verify') ? 'Verified' : 'Rejected';
-
-    // Update the verification status in the screening_answers table
-    $update_sql = "UPDATE screening_answers SET verification_status = '$status' WHERE user_id = $user_id";
-    
-    if (mysqli_query($conn, $update_sql)) {
-        // If the status is 'Verified', insert into the schedule table (only user_id)
-        if ($status == 'Verified') {
-            // Check if the user already exists in the schedule table
-            $check_schedule_sql = "SELECT COUNT(*) FROM schedule WHERE user_id = $user_id";
-            $check_schedule_result = mysqli_query($conn, $check_schedule_sql);
-            $row = mysqli_fetch_row($check_schedule_result);
-            $schedule_count = $row[0];
-
-            // If the user does not have an existing schedule, insert a new record
-            if ($schedule_count == 0) {
-                // Insert into the schedule table with only user_id
-                $insert_schedule_sql = "INSERT INTO schedule (user_id) VALUES ('$user_id')";
-                if (mysqli_query($conn, $insert_schedule_sql)) {
-                    echo "Verification status updated and schedule created successfully.";
-                } else {
-                    echo "Error creating schedule: " . mysqli_error($conn);
-                }
-            } else {
-                echo "This user already has an existing schedule.";
-            }
-        } else {
-            echo "Verification status updated to Rejected.";
-        }
-    } else {
-        echo "Error updating verification status: " . mysqli_error($conn);
-    }
-}
-
-// Fetch user information for User Management section based on screening_answers
+// Fetch users from screening_answers where verification_status is NOT 'Verified'
 $sql = "SELECT u.firstname, u.surname, u.email_address, u.id, s.verification_status
         FROM users u
-        JOIN screening_answers s ON u.id = s.user_id";
+        JOIN screening_answers s ON u.id = s.user_id
+        WHERE s.verification_status != 'Verified'";  // Exclude verified users
+
 $result = mysqli_query($conn, $sql);
 
 $users = [];
@@ -89,7 +51,7 @@ if (!empty($users)) {
     </div>
     </div>';
 } else {
-    echo '<div class="card"><p>No user information available at the moment.</p></div>';
+    echo '<div class="card"><p>No users available for verification.</p></div>';
 }
 ?>
 
