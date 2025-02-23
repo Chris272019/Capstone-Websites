@@ -2,8 +2,11 @@
 // Include the connection.php file for database connection
 include('connection.php');
 
+
 // SQL query to fetch the specific columns from the blood_request table
 $sql = "SELECT 
+            id,
+            hospital_id, 
             surname, 
             firstname, 
             middlename, 
@@ -19,12 +22,6 @@ $sql = "SELECT
             `when`, 
             `where`,
             whole_blood_units,
-            W,
-            R,
-            WP,
-            P,
-            F,
-            C,
             packed_rbc_units,
             washed_rbc_units,
             buffy_coat_poor_rbc_units,
@@ -34,7 +31,6 @@ $sql = "SELECT
             fresh_frozen_plasma_units,
             leukocyte_poor_fresh_frozen_plasma_units,
             cryoprecipitate_units,
-            hospital_id,
             WB_reasons,
             R_reasons,
             WP_reasons,
@@ -70,79 +66,75 @@ if ($result->num_rows > 0) {
         echo "<p><strong>Where:</strong> " . $row['where'] . "</p>";
 
         // Display blood unit information if values are not 0 or NULL
-        if ($row['whole_blood_units'] != 0 && $row['whole_blood_units'] != NULL) {
-            echo "<p><strong>Whole Blood Units:</strong> " . $row['whole_blood_units'] . "</p>";
-        }
-        if ($row['packed_rbc_units'] != 0 && $row['packed_rbc_units'] != NULL) {
-            echo "<p><strong>Packed RBC Units:</strong> " . $row['packed_rbc_units'] . "</p>";
-        }
-        if ($row['washed_rbc_units'] != 0 && $row['washed_rbc_units'] != NULL) {
-            echo "<p><strong>Washed RBC Units:</strong> " . $row['washed_rbc_units'] . "</p>";
-        }
-        if ($row['buffy_coat_poor_rbc_units'] != 0 && $row['buffy_coat_poor_rbc_units'] != NULL) {
-            echo "<p><strong>Buffy Coat Poor RBC Units:</strong> " . $row['buffy_coat_poor_rbc_units'] . "</p>";
-        }
-        if ($row['platelet_concentrate_units'] != 0 && $row['platelet_concentrate_units'] != NULL) {
-            echo "<p><strong>Platelet Concentrate Units:</strong> " . $row['platelet_concentrate_units'] . "</p>";
-        }
-        if ($row['apheresis_platelets_units'] != 0 && $row['apheresis_platelets_units'] != NULL) {
-            echo "<p><strong>Apheresis Platelets Units:</strong> " . $row['apheresis_platelets_units'] . "</p>";
-        }
-        if ($row['leukocyte_poor_platelet_concentrate_units'] != 0 && $row['leukocyte_poor_platelet_concentrate_units'] != NULL) {
-            echo "<p><strong>Leukocyte Poor Platelet Concentrate Units:</strong> " . $row['leukocyte_poor_platelet_concentrate_units'] . "</p>";
-        }
-        if ($row['fresh_frozen_plasma_units'] != 0 && $row['fresh_frozen_plasma_units'] != NULL) {
-            echo "<p><strong>Fresh Frozen Plasma Units:</strong> " . $row['fresh_frozen_plasma_units'] . "</p>";
-        }
-        if ($row['leukocyte_poor_fresh_frozen_plasma_units'] != 0 && $row['leukocyte_poor_fresh_frozen_plasma_units'] != NULL) {
-            echo "<p><strong>Leukocyte Poor Fresh Frozen Plasma Units:</strong> " . $row['leukocyte_poor_fresh_frozen_plasma_units'] . "</p>";
-        }
-        if ($row['cryoprecipitate_units'] != 0 && $row['cryoprecipitate_units'] != NULL) {
-            echo "<p><strong>Cryoprecipitate Units:</strong> " . $row['cryoprecipitate_units'] . "</p>";
+        $blood_units = [
+            'Whole Blood Units' => 'whole_blood_units',
+            'Packed RBC Units' => 'packed_rbc_units',
+            'Washed RBC Units' => 'washed_rbc_units',
+            'Buffy Coat Poor RBC Units' => 'buffy_coat_poor_rbc_units',
+            'Platelet Concentrate Units' => 'platelet_concentrate_units',
+            'Apheresis Platelets Units' => 'apheresis_platelets_units',
+            'Leukocyte Poor Platelet Concentrate Units' => 'leukocyte_poor_platelet_concentrate_units',
+            'Fresh Frozen Plasma Units' => 'fresh_frozen_plasma_units',
+            'Leukocyte Poor Fresh Frozen Plasma Units' => 'leukocyte_poor_fresh_frozen_plasma_units',
+            'Cryoprecipitate Units' => 'cryoprecipitate_units'
+        ];
+
+        foreach ($blood_units as $label => $field) {
+            if ($row[$field] != 0 && $row[$field] != NULL) {
+                echo "<p><strong>{$label}:</strong> " . $row[$field] . "</p>";
+            }
         }
 
         // Display reasons if values are not 0 or NULL
-        if ($row['W'] != 0 && $row['W'] != NULL) {
-            echo "<p><strong>WB Reasons:</strong> " . $row['W'] . "</p>";
-        }
-        if ($row['R'] != 0 && $row['R'] != NULL) {
-            echo "<p><strong>WB Reasons:</strong> " . $row['R'] . "</p>";
-        }
-        if ($row['WP'] != 0 && $row['WP'] != NULL) {
-            echo "<p><strong>WB Reasons:</strong> " . $row['WP'] . "</p>";
-        }
-        if ($row['P'] != 0 && $row['P'] != NULL) {
-            echo "<p><strong>WB Reasons:</strong> " . $row['P'] . "</p>";
-        }
-        if ($row['F'] != 0 && $row['F'] != NULL) {
-            echo "<p><strong>WB Reasons:</strong> " . $row['WP'] . "</p>";
-        }
-        if ($row['C'] != 0 && $row['C'] != NULL) {
-            echo "<p><strong>WB Reasons:</strong> " . $row['C'] . "</p>";
+        $reasons = [
+            'WB Reasons' => 'WB_reasons',
+            'R Reasons' => 'R_reasons',
+            'WP Reasons' => 'WP_reasons',
+            'P Reasons' => 'P_reasons',
+            'F Reasons' => 'F_reasons',
+            'C Reasons' => 'C_reasons'
+        ];
+
+        foreach ($reasons as $label => $field) {
+            if ($row[$field] != 0 && $row[$field] != NULL) {
+                echo "<p><strong>{$label}:</strong> " . $row[$field] . "</p>";
+            }
         }
 
-
-
-        // Display reasons if values are not 0 or NULL
-        if ($row['WB_reasons'] != 0 && $row['WB_reasons'] != NULL) {
-            echo "<p><strong>WB Reasons:</strong> " . $row['WB_reasons'] . "</p>";
-        }
-        if ($row['R_reasons'] != 0 && $row['R_reasons'] != NULL) {
-            echo "<p><strong>R Reasons:</strong> " . $row['R_reasons'] . "</p>";
-        }
-        if ($row['WP_reasons'] != 0 && $row['WP_reasons'] != NULL) {
-            echo "<p><strong>WP Reasons:</strong> " . $row['WP_reasons'] . "</p>";
-        }
-        if ($row['P_reasons'] != 0 && $row['P_reasons'] != NULL) {
-            echo "<p><strong>P Reasons:</strong> " . $row['P_reasons'] . "</p>";
-        }
-        if ($row['F_reasons'] != 0 && $row['F_reasons'] != NULL) {
-            echo "<p><strong>F Reasons:</strong> " . $row['F_reasons'] . "</p>";
-        }
-        if ($row['C_reasons'] != 0 && $row['C_reasons'] != NULL) {
-            echo "<p><strong>C Reasons:</strong> " . $row['C_reasons'] . "</p>";
-        }
+        // Accept and Reject buttons
+        // Accept and Reject buttons
+        echo "<form method='POST' action='process_request.php' class='request-actions'>";
+        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+        echo "<button type='submit' name='action' value='accept' class='accept-btn'>Accept</button>";
+        echo "<button type='button' class='reject-btn' onclick='showRejectModal(\"" . $row['id'] . "\")'>Reject</button>";
+        echo "</form>";
         
+        // Rejection Modal
+        echo "<div id='rejectModal' class='modal' style='display:none;'>
+                <div class='modal-content'>
+                    <span class='close' onclick='closeModal()'>&times;</span>
+                    <h2>Reject Blood Request</h2>
+                    <form method='POST' action='process_request.php'>
+                        <input type='hidden' name='id' id='modal_id'>
+                        <label for='rejection_reason'>Rejection Reason:</label>
+                        <textarea name='rejection_reason' required></textarea>
+                        <button type='submit' name='action' value='reject'>Submit</button>
+                    </form>
+                </div>
+            </div>";
+        
+        echo "<script>
+                function showRejectModal(id) {
+                    document.getElementById('rejectModal').style.display = 'block';
+                    document.getElementById('modal_id').value = id;
+                }
+                function closeModal() {
+                    document.getElementById('rejectModal').style.display = 'none';
+                }
+            </script>";
+        
+
+
         echo "</div>"; // End of card-body
         echo "</div>"; // End of card
     }

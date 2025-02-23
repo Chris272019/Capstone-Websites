@@ -17,7 +17,7 @@ $result = $conn->query($sql);
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
-            padding: 20px;
+            padding: 0px;
         }
         
         .analytics-container {

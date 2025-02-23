@@ -17,10 +17,65 @@ unset($_SESSION['message'], $_SESSION['error']);
     <title>Hospital Dashboard - Blood Donation System</title>
     <!-- Include Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <link rel="stylesheet" href="css/hospital.css">
 
 </head>
 <style>
+    body {
+            transition: margin-left 0.3s ease;
+        }
+
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            height: 100%;
+            background-color:rgb(173, 20, 20);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding-top: 60px;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .content {
+            transition: margin-left 0.3s ease;
+            padding: 20px;
+        }
+
+        .content.shifted {
+            margin-left: 250px;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 1001;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 768px) {
+            .content.shifted {
+                margin-left: 0;
+            }
+
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+        }
     /* Modal styles */
 .modal {
     display: none;
@@ -138,6 +193,7 @@ button[type="submit"]:hover {
     }
 }   
 </style>
+</head>
 <body>
     <!-- Display success or error messages -->
     <?php if ($message): ?>
@@ -147,6 +203,17 @@ button[type="submit"]:hover {
         <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
     <?php endif; ?>
 
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <a href="#" id="makeRequestBtn" onclick="openModal()"><i class="fas fa-plus-circle"></i> Make a Request</a>
+        <a href="#" onclick="loadContent('bloodRequests')"><i class="fas fa-tint"></i> Blood Requests</a>
+        <a href="#" onclick="loadReport()"><i class="fas fa-chart-line"></i> Reports</a>
+        <a href="hospital_logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
     <!-- Header Section -->
     <header>
         <h1>Hospital Dashboard</h1>
@@ -155,13 +222,7 @@ button[type="submit"]:hover {
 
     <!-- Sidebar Navigation -->
     <!-- Toggle Sidebar Button -->
-    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
-<div class="sidebar" id="sidebar">
-    <a href="#" id="makeRequestBtn" onclick="openModal()"><i class="fas fa-plus-circle"></i> Make a Request</a>
-    <a href="#" onclick="loadContent('bloodRequests')"><i class="fas fa-tint"></i> Blood Requests</a>
-    <a href="#" onclick="loadReport()"><i class="fas fa-chart-line"></i> Reports</a>
-    <a href="hospital_logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-</div>
+
 
     <!-- Modal for Making a Request -->
 <!-- Modal -->
@@ -613,6 +674,13 @@ button[type="submit"]:hover {
 
 <script src="js/hospital.js"></script>
 <script>
+    function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('open');
+            content.classList.toggle('shifted');
+        }
+
 function loadReport() {
     document.getElementById('bloodRequestsContainer').style.display = 'none';
     document.getElementById('reportContainer').style.display = 'block';
