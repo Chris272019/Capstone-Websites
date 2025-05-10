@@ -1,0 +1,7 @@
+[17-Mar-2025 08:15:58 America/New_York] Database connection failed: SQLSTATE[HY000] [1698] Access denied for user 'root'@'localhost'
+[17-Mar-2025 08:18:06 America/New_York] Received raw data: {"user_id":43}
+[17-Mar-2025 08:18:06 America/New_York] User ID received: 43
+[17-Mar-2025 08:18:06 America/New_York] PHP Fatal error:  Uncaught Error: Call to a member function bindParam() on bool in /home/a1lifest/domains/wh1422892.ispot.cc/public_html/appbackend/fetch_user_data.php:60
+Stack trace:
+#0 {main}
+  thrown in /home/a1lifest/domains/wh1422892.ispot.cc/public_html/appbackend/fetch_user_data.php on line 60

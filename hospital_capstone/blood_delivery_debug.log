@@ -1,0 +1,9 @@
+[2025-04-27 14:49:25] Delivery process started
+[2025-04-27 14:49:25] POST data received Data: {"inventory_id":"18","admin_id":"ADMIN_7749","blood_volume":"450"}
+[2025-04-27 14:49:25] Input parameters validated Data: {"inventory_id":"18","admin_id":"ADMIN_7749","blood_volume":"450"}
+[2025-04-27 14:49:25] Transaction started
+[2025-04-27 14:49:25] Inventory query executed Data: {"rows":1}
+[2025-04-27 14:49:25] Inventory data retrieved Data: {"blood_type":"A+","blood_group":"leukocyte_poor_fresh_frozen_plasma","volume_ml":0,"number_of_bags":0,"status":"Used"}
+[2025-04-27 14:49:25] ERROR: Transaction rolled back - Requested volume exceeds available inventory. Available: 0ml, Requested: 450ml
+[2025-04-27 14:49:25] Database connection closed
+[2025-04-27 14:49:25] Sending response Data: {"success":false,"message":"Requested volume exceeds available inventory. Available: 0ml, Requested: 450ml","debug_info":{"error":"Requested volume exceeds available inventory. Available: 0ml, Requested: 450ml","error_trace":"#0 {main}"}}

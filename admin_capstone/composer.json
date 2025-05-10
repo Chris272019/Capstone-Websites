@@ -1,0 +1,6 @@
+{
+    "name": "a1lifest/admin_capstone",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

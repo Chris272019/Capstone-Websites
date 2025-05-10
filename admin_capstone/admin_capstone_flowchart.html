@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Capstone Process Flowchart</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true });
+</script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  h1 {
+    text-align: center;
+  }
+  .mermaid {
+    margin: 0 auto;
+    max-width: 900px;
+  }
+</style>
+</head>
+<body>
+<h1>Admin Capstone Process Flowchart</h1>
+<div class="mermaid">
+%% Flowchart for Admin Capstone Processes
+flowchart TD
+  %% Admin Login Process
+  A1([Start]) --> A2[/Input: Username & Password/]
+  A2 --> A3{Credentials Valid?}
+  A3 -- Yes --> A4[Set Session admin_id]
+  A4 --> A5([End: Redirect to Dashboard])
+  A3 -- No --> A6([End: Show Login Error])
+
+  %% Add Blood Request Process
+  B1([Start]) --> B2[/Input: Hospital, Blood Component, Blood Group, Amount, Patient ID/]
+  B2 --> B3{Inputs Valid?}
+  B3 -- Yes --> B4[Insert Blood Request into DB]
+  B4 --> B5([End: Success Response])
+  B3 -- No --> B6([End: Error Response])
+
+  %% Fetch Blood Requests Process
+  C1([Start]) --> C2[Query Blood Requests from DB]
+  C2 --> C3[Display Requests with Status Filters]
+  C3 --> C4([End])
+
+  %% Handle Request Accept/Reject Process
+  D1([Start]) --> D2[/Input: Request ID & Action/]
+  D2 --> D3{Action = Accept?}
+  D3 -- Yes --> D4[Update Request Status to Accepted]
+  D4 --> D7([End: Show Success & Redirect])
+  D3 -- No --> D5{Action = Reject?}
+  D5 -- Yes --> D6[Update Request Status to Rejected with Reason]
+  D6 --> D7
+  D5 -- No --> D7
+
+  %% Combine flows visually
+  subgraph Admin_Login
+    A1 --> A2 --> A3 --> A4 --> A5
+    A3 --> A6
+  end
+
+  subgraph Add_Blood_Request
+    B1 --> B2 --> B3 --> B4 --> B5
+    B3 --> B6
+  end
+
+  subgraph Fetch_Blood_Requests
+    C1 --> C2 --> C3 --> C4
+  end
+
+  subgraph Handle_Request
+    D1 --> D2 --> D3 --> D4 --> D7
+    D3 --> D5 --> D6 --> D7
+    D5 -- No --> D7
+  end
+</div>
+</body>
+</html>
